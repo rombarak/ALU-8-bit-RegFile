@@ -1,7 +1,7 @@
 // alu8.v 
-// -----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // EXPLANATION
-// -----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // This ALU (Arithmetic Logic Unit) executes 8-bit arithmetic and logical
 // operations according to a 3-bit opcode. It supports addition, subtraction,
 // bitwise logic (AND, OR, XOR, NOT), and single-bit shift operations.
@@ -12,7 +12,7 @@
 //
 // This design is purely combinational and serves as the core computation
 // element within the 8-bit CPU datapath.
-// -----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 module alu8 (a,b,opcode,y,z,c); 
   input [7:0] a;        // first input operand
