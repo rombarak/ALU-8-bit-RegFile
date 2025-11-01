@@ -17,13 +17,13 @@ module control_unit (clk, reset, instr, opcode, ra1, ra2, wa, we, pc, done);
   input [8:0] instr;          // 9-bit instruction from memory
 
   // outputs to datapath
-  output reg [2:0] opcode;    // operation for ALU
-  output reg [1:0] ra1, ra2, wa; // register addresses
-  output reg we;              // write enable
-  output reg [7:0] pc;        // program counter (for instruction memory)
-  output reg done;            // signals when program is finished
+  output reg [2:0] opcode;        // operation for ALU
+  output reg [1:0] ra1, ra2, wa;  // register addresses
+  output reg we;                  // write enable
+  output reg [7:0] pc;            // program counter (for instruction memory)
+  output reg done;                // signals when program is finished
 
-  // FSM states (Verilog classic syntax)
+  // FSM states 
   reg [2:0] state, next_state;
 
   parameter S_FETCH     = 3'b000;
