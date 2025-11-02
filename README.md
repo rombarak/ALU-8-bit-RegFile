@@ -231,6 +231,17 @@ gtkwave cpu.vcd
 
 ---
 
+## Conclusion  
+The design and implementation of the **8-bit CPU** were successfully completed, demonstrating a fully functional processor built entirely from fundamental digital logic modules. The system integrates an **ALU**, **Register File**, **Control Unit**, **Datapath**, and **Instruction Memory**, all operating under a single clock domain and coordinated through a finite state machine.  
+
+Simulations confirmed that the CPU correctly executes a sequence of **arithmetic**, **logical**, and **shift operations** based on 9-bit instructions loaded from `program.mem`. The control unit efficiently manages the instruction flow through the **FETCH–EXECUTE–WRITEBACK** stages, while the ALU and register file handle data processing and storage reliably.  
+
+Although the CPU does not include branching or jump mechanisms, its modular and synchronous design makes it an excellent base for extending into more advanced architectures.  
+Overall, this project demonstrates a clear understanding of **how a processor executes binary instructions at the hardware level**, combining control logic, datapath design, and verification into a cohesive and educational implementation.
+
+
+---
+
 ## License
 This project is released under an open-source license for academic and educational use.  
 Users may reproduce, modify, and extend the design with proper attribution.
