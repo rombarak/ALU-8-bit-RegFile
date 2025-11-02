@@ -21,6 +21,7 @@ The CPU executes instructions stored in external memory and follows a clear Fetc
 - [Instruction Set](#instruction-set)
 - [Simulation Output](#simulation-output)
 - [Results](#results)
+- [Conclusion](#Conclusion)
 - [License](#license)
 
 ---
