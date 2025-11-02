@@ -66,3 +66,176 @@ Performs 8-bit arithmetic and logic operations.
 Includes carry and zero flags for control feedback.
 
 **Main Operations:**
+```verilog
+ADD, SUB, AND, OR, XOR, NOT, SHL, SHR
+```
+
+**Features:**
+- Operates on 8-bit inputs (`a`, `b`)
+- Produces 8-bit output (`y`)
+- Generates status flags:
+  - **C** – Carry/Borrow flag
+  - **Z** – Zero flag
+- Fully combinational and synthesizable logic
+- Parameter-free and portable between FPGA/ASIC environments
+
+---
+
+### Register File (`regfile.v`)
+Implements a 4×8-bit register bank with dual asynchronous read ports and one synchronous write port.  
+Used to temporarily store operands and results between ALU operations.
+
+**Functional Description:**
+- Asynchronous read ensures immediate data availability for ALU input
+- Synchronous write ensures data consistency at each clock cycle
+- Write operation controlled via the `we` (Write Enable) signal
+
+**Key Signals:**
+| Signal | Width | Description |
+|---------|--------|-------------|
+| `clk` | 1 | System clock for synchronous writes |
+| `we` | 1 | Write enable |
+| `ra1`, `ra2` | 2 | Read addresses |
+| `wa` | 2 | Write address |
+| `wd` | 8 | Write data input |
+| `rd1`, `rd2` | 8 | Read data outputs |
+
+---
+
+### Datapath (`datapath.v`)
+The Datapath module connects the **ALU** and **Register File**, defining how data flows through the processor.  
+It is fully controlled by the **Control Unit**.
+
+**Responsibilities:**
+- Reads operands (`a`, `b`) from the Register File
+- Sends operands to the ALU for computation
+- Writes the ALU result (`y`) back into the Register File
+- Transfers the control signals (`we`, `opcode`, `ra1`, `ra2`, `wa`) between modules
+
+This module forms the **core dataflow backbone** of the processor.
+
+---
+
+### Control Unit (`control_unit.v`)
+Implements the **Finite State Machine (FSM)** that sequences CPU operations.
+
+**FSM States:**
+| State | Name | Description |
+|--------|------|-------------|
+| `000` | **S_FETCH** | Fetch instruction from memory |
+| `001` | **S_EXECUTE** | Decode and execute ALU operation |
+| `010` | **S_WRITEBACK** | Write ALU result to destination register |
+| `011` | **S_NEXT** | Increment Program Counter |
+| `100` | **S_DONE** | Halt CPU after program completion |
+
+**Outputs:**
+- `opcode`: ALU operation selector
+- `ra1`, `ra2`, `wa`: Register addresses
+- `we`: Write enable
+- `pc`: Program counter
+- `done`: Signals program termination
+
+The FSM ensures deterministic, cycle-accurate execution of instructions.
+
+---
+
+### Instruction Memory (`instruction_memory.v`)
+Stores up to 256 9-bit instructions, each structured as:  
+`[Opcode(3) | RA1(2) | RA2(2) | WA(2)]`.
+
+**Functional Description:**
+- Indexed by Program Counter (`pc`)
+- Provides instruction to the Control Unit during FETCH stage
+- Preloaded via an external file (`program.mem`) at simulation start
+
+**Initialization Example:**
+```verilog
+$readmemb("program.mem", mem);
+```
+
+This enables flexible reprogramming of the CPU without source modification.
+
+---
+
+### Top-Level CPU (`cpu.v`)
+Integrates all components into a complete 8-bit processor.  
+Responsible for interconnecting the Control Unit, Datapath, and Instruction Memory.
+
+**Flow Summary:**
+```
+Instruction Memory → Control Unit → Datapath → ALU → RegFile → Control Unit
+```
+
+**Responsibilities:**
+- Synchronizes all modules on the main clock
+- Manages instruction fetch, decode, and execution
+- Exposes the system interface (clock, reset)
+
+---
+
+### Testbench (`cpu_tb.v`)
+Provides a complete test environment for functional verification of the CPU.  
+Implements automatic clock, reset, memory initialization, and waveform generation.
+
+**Key Features:**
+- Clock period: 10 ns (`always #5 clk = ~clk;`)
+- Register initialization prior to execution
+- Console output displaying CPU state each clock cycle
+- Generates simulation waveform (`cpu.vcd`) for detailed inspection
+- Supports external program modification through `program.mem`
+
+**Sample Output:**
+```
+ time | PC | opcode | ra1 | ra2 | wa | R0 | R1 | R2 | R3 |  Y  | Z | C | State | WE
+------------------------------------------------------------------------------------
+  10  | 00 | 000    | 00  | 01  | 10 | 0A | 05 | 0F | 00 | 0F  | 0 | 0 | 000   | 1
+```
+
+---
+
+## Instruction Set
+
+| Opcode | Operation | Description |
+|---------|------------|-------------|
+| `000` | ADD | Add two registers |
+| `001` | SUB | Subtract two registers |
+| `010` | AND | Bitwise AND |
+| `011` | OR | Bitwise OR |
+| `100` | XOR | Bitwise XOR |
+| `101` | NOT | Bitwise inversion of operand A |
+| `110` | SHL | Logical shift left |
+| `111` | SHR | Logical shift right |
+
+Example instruction file: [`program.mem`](Verilog_Code/program.mem)
+
+---
+
+## Simulation Output
+The CPU is simulated using the provided testbench.  
+Results are logged cycle-by-cycle, displaying all relevant control and datapath signals.  
+A waveform dump (`cpu.vcd`) is generated for detailed visual debugging using tools such as **GTKWave**.
+
+**View waveform:**
+```bash
+gtkwave cpu.vcd
+```
+
+---
+
+## Results
+- All ALU operations verified for arithmetic, logical, and shift functions.
+- FSM state sequencing validated across multiple instruction cycles.
+- Program Counter increments correctly and halts at program completion.
+- Zero and Carry flags behave according to expected arithmetic results.
+- Complete CPU functionality confirmed through behavioral simulation.
+
+---
+
+## License
+This project is released under an open-source license for academic and educational use.  
+Users may reproduce, modify, and extend the design with proper attribution.
+
+---
+
+**“Understanding how a CPU executes instructions from the ground up is the foundation of digital logic design.”**  
+– Rom Barak, 2025
