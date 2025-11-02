@@ -237,5 +237,3 @@ Users may reproduce, modify, and extend the design with proper attribution.
 
 ---
 
-**“Understanding how a CPU executes instructions from the ground up is the foundation of digital logic design.”**  
-– Rom Barak, 2025
