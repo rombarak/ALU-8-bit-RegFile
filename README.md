@@ -230,6 +230,31 @@ gtkwave cpu.vcd
 - Zero and Carry flags behave according to expected arithmetic results.
 - Complete CPU functionality confirmed through behavioral simulation.
 
+## Waveform Results
+
+Simulation waveforms showing CPU operation through FSM stages.
+
+### Overview
+Full instruction sequence across FETCH, EXECUTE, WRITEBACK, and DONE states.
+
+![Overview](./Assets/waveform_overview.jpg)
+
+### Execute Stage
+ALU performs the operation defined by the opcode using source registers `ra1` and `ra2`.
+
+![Execute](./Assets/waveform_execute.jpg)
+
+### Writeback Stage
+ALU result (`y`) is written back to the destination register (`wa`) when `we=1`.
+
+![Writeback](./Assets/waveform_writeback.jpg)
+
+### Done State
+Final state where the program completes and `done` is asserted high.
+
+![Done](./Assets/waveform_done.jpg)
+
+
 ---
 
 ## Conclusion  
