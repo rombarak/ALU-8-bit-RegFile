@@ -61,6 +61,7 @@ module control_unit (clk, reset, instr, opcode, ra1, ra2, wa, we, pc, done);
       // FETCH – load current instruction from memory
       S_FETCH: begin
         {opcode, ra1, ra2, wa} = instr;  // decode instruction
+        if (instr === 9'bxxxxxxxxx)  // Check if the current instruction is undefined (all X)- end of program 
         next_state = S_EXECUTE;
       end
 
