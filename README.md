@@ -2,7 +2,7 @@
 
 This repository contains a minimal 8-bit CPU implemented in Verilog HDL.  
 The design demonstrates the fundamental architecture of a simple processor, including the ALU, Register File, Control Unit, Instruction Memory, and Datapath.  
-The CPU executes instructions stored in external memory and follows a clear Fetch–Decode–Execute–Writeback sequence.
+The CPU executes instructions stored in external memory and follows a clear Fetch-Decode-Execute-Writeback sequence.
 
 ---
 
